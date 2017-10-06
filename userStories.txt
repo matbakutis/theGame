@@ -1,0 +1,9 @@
+User Stories for theGame
+
+A user will be able to choose a class that has certain abilities
+A user will be able to choose a difficulty level
+A user will be able to progress through three rounds 
+A user will be able to aim attacks with the mouse
+A user will be able to move with wasd/arrow keys
+A user will be dodging attacks from enemies
+A user will take damage if touched by an enemy
