@@ -1,43 +1,28 @@
-initTilemap() {
-  //  The 'tavern' key here is the Loader key given in game.load.tilemap
-  let map = game.add.tilemap('cave');
-  // store a reference so we can access it elsewhere on this class
-  this.map = map;
+let loadState = {
+	preload: function(){
+		game.load.tilemap('cave', '/images/jsonMaps/caveMap.json', null, Phaser.Tilemap.TILED_JSON);
+		game.load.image('tiles1', '/images/tilesets/hyptosis_tile-art-batch-1.png');
+		game.load.image('tiles2', '/images/tilesets/hyptosis_til-art-batch-2.png');
+		game.load.image('tiles3', '/images/tilesets/hyptosis_tile-art-batch-3.png');
+		game.load.image('tiles4', '/images/tilesets/hyptosis_tile-art-batch-4.png');
+		game.load.image('tiles5', '/images/tilesets/hyptosis_tile-art-batch-5.png');
+		game.load.spritesheet('femaleMage', '/images/sprites/characters/Heroes/Mage-F-01.png', 24, 32, 12);
+		game.load.spritesheet('maleMage', '/images/sprites/characters/Heroes/Mage-M-01.png', 24, 32, 12);
+		game.load.spritesheet('femaleRanger', '/images/sprites/characters/Heroes/Ranger-F-01.png', 24, 32, 12);
+		game.load.spritesheet('maleRanger', '/images/sprites/characters/Heroes/Ranger-M-01.png', 24, 32, 12);
+		game.load.spritesheet('fireBall', '/images/fireballoga/red/spritesheet-red.png', 512, 197, 6);
+		game.load.spritesheet('iceBall', '/images/fireballoga/blue/spritesheet-blue.png', 512, 197, 6);
+		game.load.spritesheet('laserBall', '/images/fireballoga/pink/spritesheet-pink.png', 512, 197, 6);
+		game.load.spritesheet('redEnemy', '/images/sprites/redSprite/enemySpriteSheet.png', 535, 495, 2);
+		game.load.audio('caveTheme', '/sounds/caveTheme.mp3');
+		game.load.audio('spell1', '/sounds/launches/flaunch.wav');
+		game.load.audio('spell2', '/sounds/launches/iceball.wav');
+		game.load.audio('spell3', '/sounds/launches/rlaunch.wav');
+		game.load.image('menuBackground', "/images/backgrounds/startScreen.jpg");
+		game.load.image('deathBackground', "/images/backgrounds/deathScreen.jpg");
+	},
 
-  // The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
-  // The second parameter maps this name to the Phaser.Cache key 'tiles'
-  map.addTilesetImage('tilesetHouse', 'tiles');
-  map.addTilesetImage('Hints', 'hints');
-
-  // create the base layer, these are the floors, walls
-  // and anything else we want behind any sprites
-  map.createLayer('Base');
-
-  // next create the collision layer
-  let collisionLayer = map.createLayer('Collision');
-  this.collisionLayer = collisionLayer;
-
-  // we don't want the collision layer to be visible
-  collisionLayer.visible = false;
-
-  // inform phaser that our collision layer is our collision tiles
-  // in our case, since we separated out the collision tiles into its own layer
-  // we pass an empty array and passing in true to enable collision
-  map.setCollisionByExclusion([], true, this.collisionLayer);
-
-  //  This resizes the game world to match the layer dimensions
-  collisionLayer.resizeWorld();
-
-  // we will have to initialize our player here
-  // so it's sprite will show between the base and foreground tiles
-  this.initPlayer();
-
-  // creating the foreground layer last after all moving sprites
-  // ensures that this layer will stay above during depth sorting
-  map.createLayer('Foreground');
-
-  // pull the exit area from the object layer
-  // we will be using this one during update to check if our player has moved into the exit area
-  let exit = this.map.objects.Meta.find( o => o.name == 'exit');
-  this.exitRect = new Phaser.Rectangle(exit.x, exit.y, exit.width, exit.height);
-}
+	create: function(){
+		game.state.start('menu');
+	}
+};

@@ -5,6 +5,10 @@ let enemies1;
 let round = 0;
 let caveTheme;
 let soundManager;
+let soundStart = 0;
+let spell1;
+let spell2;
+let spell3;
 function preload() {
 	game.load.tilemap('cave', '/images/jsonMaps/caveMap.json', null, Phaser.Tilemap.TILED_JSON);
 	game.load.image('tiles1', '/images/tilesets/hyptosis_tile-art-batch-1.png');
@@ -24,23 +28,14 @@ function preload() {
 }
 
 function create() {
-	  game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 	  let map = game.add.tilemap('cave');
 	  this.map = map;
 
     soundManager = new Phaser.SoundManager(game);
-    spell1 = soundManager.add('spell1');
-    spell2 = soundManager.add('spell2');
-    spell3 = soundManager.add('spell3');
-    caveTheme = soundManager.add('caveTheme');
-    soundManager.setDecodedCallback('caveTheme', function(){
-      caveTheme.play();
-      this.play()
-      console.log('loaded');
-    }, this); 
-    
-
-    console.log(caveTheme, ' after playe')
+    spell1 = soundManager.add('spell1', .5);
+    spell2 = soundManager.add('spell2', .5);
+    spell3 = soundManager.add('spell3', .5);
 
 	  map.addTilesetImage('tiles1', 'tiles1');
 	  map.addTilesetImage('tiles2', 'tiles2');
@@ -139,6 +134,7 @@ function create() {
 }
 
 function update() {
+  startMusic();
 	game.physics.arcade.collide(this.char, this.collisionLayer);
 	if (game.input.keyboard.isDown(Phaser.KeyCode.A)){
         char.animations.play('left');
@@ -183,6 +179,15 @@ function update() {
     game.physics.arcade.overlap(iceBall, enemies1, collisionHandler, null, this);
     game.physics.arcade.overlap(laserBall, enemies1, collisionHandler, null, this);
 		
+}
+
+function startMusic(){
+  if (soundStart === 0){
+    soundManager.setDecodedCallback('caveTheme', function(){
+      soundManager.play('caveTheme', .75, true);
+      soundStart++;
+    }, game);
+  }
 }
 
 function collisionHandler(ball, enemy){
